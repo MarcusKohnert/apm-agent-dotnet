@@ -35,12 +35,13 @@ namespace Elastic.Apm.Elasticsearch
 			if (TryStartElasticsearchSpan(name, out var span, instanceUri))
 			{
 				Logger.Info()?.Log("Received an {Event} event from elasticsearch", @event);
-				var requestUri = requestData.Uri;
+
 				span.Context.Http = new Http
 				{
-					Method = requestData.Method.GetStringValue(),
-					Url = requestUri?.PathAndQuery
+					Method = requestData.Method.GetStringValue()
 				};
+
+				span.Context.Http.SetUrl(requestData.Uri);
 			}
 		}
 
